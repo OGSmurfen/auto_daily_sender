@@ -26,11 +26,11 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AccountServlet</servlet-name>
-        <servlet-class>com.papasmurfie.webapp_glassfish.AccountServlet</servlet-class>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.papasmurfie.webapp_glassfish.RegisterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AccountServlet</servlet-name>
-        <url-pattern>/AccountServlet</url-pattern>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/RegisterServlet</url-pattern>
     </servlet-mapping>
 </web-app>

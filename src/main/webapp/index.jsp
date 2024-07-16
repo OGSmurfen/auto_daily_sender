@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>JSP - Hello World</title>
+  <title>webapp</title>
 </head>
 <body>
-<h1><%= "Hello World!" %></h1>
+<h1><%= "Webapp!" %></h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
+<a href="hello-servlet">GetAll Users</a>
 <br/>
 <br/>
 <br/>
@@ -20,5 +20,17 @@
   <input type="submit" value="Login">
   <button type="submit" formaction="register.jsp">Register</button>
 </form>
+
+<%
+  String errorMessage = (String) request.getAttribute("errorMessage");
+  if (errorMessage != null) {
+%>
+<div style="color: red;">
+  <%= errorMessage %>
+</div>
+<%
+  }
+%>
+
 </body>
 </html>

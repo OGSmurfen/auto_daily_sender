@@ -23,13 +23,13 @@ public class HelloServlet extends HttpServlet {
         out.println("<h1>Users: </h1>");
         for (User user :
                 users) {
-            out.print("<p>"+ user.getUsername() +"</p>");
+            out.print("<p> Username: \""+ user.getUsername() + "\"; Password: \"" + user.getPassword() + "\"</p>");
         }
         out.println("</body></html>");
     }
 
     private List<User> getAllUsers(){
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
-    }
+    }//TODO: use UserService here
 
 }
