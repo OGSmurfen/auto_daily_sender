@@ -10,5 +10,6 @@ public interface IUserRepository extends Repository<User, Long>{
     public User create(User entity);
     public User update(User entity);
     public User delete(User entity);
-    public List<User> getByUsername(String username);
+    public List<User> getAllByUsername(String username);
+    public User getUserByUsername(String username);
 }

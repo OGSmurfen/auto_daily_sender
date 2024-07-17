@@ -18,7 +18,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public List<User> getAll() {
-        return null;
+        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
     @Override
@@ -44,13 +44,25 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public List<User> getByUsername(String username) {
+    public List<User> getAllByUsername(String username) {
         TypedQuery<User> query = entityManager.createQuery(
                 "SELECT u FROM User u WHERE u.username = :username", User.class);
         query.setParameter("username", username);
         try{
             List<User> retrievedUsers = query.getResultList();
             return retrievedUsers;
+        }catch (NoResultException e){
+            return null;
+        }
+    }
+    @Override
+    public User getUserByUsername(String username) {
+        TypedQuery<User> query = entityManager.createQuery(
+                "SELECT u FROM User u WHERE u.username = :username", User.class);
+        query.setParameter("username", username);
+        try{
+            User retrievedUser = query.getSingleResult();
+            return retrievedUser;
         }catch (NoResultException e){
             return null;
         }

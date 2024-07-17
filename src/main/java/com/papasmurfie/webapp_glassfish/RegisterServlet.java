@@ -3,16 +3,15 @@ package com.papasmurfie.webapp_glassfish;
 import Services.UserService;
 import entity.User;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import jakarta.transaction.Transactional;
+import utils.PasswordEncryptUtil;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(name = "RegisterServlet", value = "/RegisterServlet")
@@ -20,7 +19,6 @@ public class RegisterServlet extends HttpServlet {
     @Inject
     private UserService userService;
 
-    @Transactional
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //String username = (String) request.getAttribute("username");
@@ -33,33 +31,40 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher(getServletContext().getInitParameter("registerPage")).forward(request, response);
         }else{
             //if passwords match
-            if(isThereSuchUser(username, password)){
+            if(isThereSuchUser(username)){
                 request.setAttribute("errorMessage", "Username already exists");
                 request.getRequestDispatcher(getServletContext().getInitParameter("registerPage")).forward(request, response);
             }else{
                 //if username is free -> create new user
-                User newUser = new User();
-                newUser.setUsername(username); newUser.setPassword(password);
-                userService.createUser(newUser);
-
-                request.setAttribute("errorMessage", "User created successfully");
-                request.getRequestDispatcher(getServletContext().getInitParameter("registerPage")).forward(request, response);
+                createUserWithEncryptedPassword(request, response, username, password);
             }
         }
-
-
-
 //        RequestDispatcher dispatcher = request.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage"));
 //        dispatcher.forward(request, response);
     }
 
-    private boolean isThereSuchUser(String username, String password){
-        List<User> retreivedUsers = userService.findAllByUsername(username);
-        for (User user : retreivedUsers) {
-            if (user.getUsername().equals(username)) {
-                return true;
-            }
+    private void createUserWithEncryptedPassword(HttpServletRequest request, HttpServletResponse response, String username, String password) throws ServletException, IOException {
+        try {
+            byte[] salt = PasswordEncryptUtil.generateSalt();
+            String hashedPassword = PasswordEncryptUtil.hashPassword(password, salt);
+
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(hashedPassword);
+            newUser.setSalt(salt);
+
+            userService.createUser(newUser);
+
+            request.setAttribute("errorMessage", "User created successfully");
+            request.getRequestDispatcher(getServletContext().getInitParameter("registerPage")).forward(request, response);
+
+        } catch (NoSuchAlgorithmException e) {
+            request.setAttribute("errorMessage", "Password encryption went wrong");
+            request.getRequestDispatcher(getServletContext().getInitParameter("registerPage")).forward(request, response);
+
         }
-        return false;
+    }
+    private boolean isThereSuchUser(String username){
+        return userService.getUserByUsername(username) != null;
     }
 }

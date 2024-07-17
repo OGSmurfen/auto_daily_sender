@@ -15,7 +15,13 @@ public class UserService {
     public void createUser(User user){
         userRepository.create(user);
     }
-    public List<User> findAllByUsername(String username){
-        return userRepository.getByUsername(username);
+    public List<User> getAllByUsername(String username){
+        return userRepository.getAllByUsername(username);//really there shouldn't be more than 1 with same username
+    }
+    public User getUserByUsername(String username){
+        return userRepository.getUserByUsername(username);
+    }
+    public List<User> getAll(){
+        return userRepository.getAll();
     }
 }
