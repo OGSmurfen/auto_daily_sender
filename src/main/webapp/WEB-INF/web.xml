@@ -33,4 +33,20 @@
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SendMailServlet</servlet-name>
+        <servlet-class>com.papasmurfie.webapp_glassfish.SendMailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendMailServlet</servlet-name>
+        <url-pattern>/SendMailServlet</url-pattern>
+    </servlet-mapping>
+
+    <resource-ref>
+        <description>Mail Session</description>
+        <res-ref-name>mail/MyMailSession</res-ref-name>
+        <res-type>jakarta.mail.Session</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 </web-app>

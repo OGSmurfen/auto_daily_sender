@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import jakarta.transaction.Transactional;
+import utils.EmailSender;
 import utils.PasswordEncryptUtil;
 
 import java.io.IOException;
