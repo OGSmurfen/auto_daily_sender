@@ -7,7 +7,7 @@
 <body>
 <h1><%= "Webapp!" %></h1>
 <br/>
-<a href="hello-servlet">GetAll Users</a>
+<a href="hello-servlet">GetAll Users (in development only)</a>
 <br/>
 <br/>
 <br/>
