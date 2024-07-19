@@ -12,11 +12,21 @@ import utils.EmailSender;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @WebServlet(name = "SendMailServlet", value = "/SendMailServlet")
 public class SendMailServlet extends HttpServlet {
     @Inject
     private EmailSender emailSender;
+
+    private String emailTemplatePath;
+
+    @Override
+    public void init() throws ServletException {
+        emailTemplatePath = getServletConfig().getInitParameter("emailTemplatePath");
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         sendMail(req, resp);
@@ -30,8 +40,13 @@ public class SendMailServlet extends HttpServlet {
     private void sendMail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String mailBody = req.getParameter("mailcontent");
         String recipient = req.getParameter("recipient");
+
+        String template = new String(Files.readAllBytes(Paths.get(getServletContext().getRealPath(emailTemplatePath))));
+        String filledTemplate = template.replace("[Recipient]", "OGSmurfen").replace("[Email Content]", mailBody);
+
         try {
-            emailSender.sendEmail(recipient, "Auto-mail", mailBody);
+            //emailSender.sendEmail(recipient, "Daily-Auto-Mail", mailBody);
+            emailSender.sendEmail(recipient, "Daily-Auto-Mail", filledTemplate);
             req.setAttribute("errorMessage", "Mail sent successfully!");
             req.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage")).forward(req, resp);
         } catch (MessagingException e) {

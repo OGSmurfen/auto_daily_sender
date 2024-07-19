@@ -15,9 +15,10 @@ public class EmailSender {
     public void sendEmail(String to, String subject, String body) throws MessagingException {
         Message message = new MimeMessage(emailSession);
         message.setFrom(new InternetAddress("chakarov.ilia@gmail.com"));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));//TODO: check, may be errors here !
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         message.setSubject(subject);
-        message.setText(body);
+       // message.setText(body);
+        message.setContent(body, "text/html");
 
         Transport.send(message);
     }

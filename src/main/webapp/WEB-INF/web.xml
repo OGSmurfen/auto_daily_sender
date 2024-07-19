@@ -37,6 +37,10 @@
     <servlet>
         <servlet-name>SendMailServlet</servlet-name>
         <servlet-class>com.papasmurfie.webapp_glassfish.SendMailServlet</servlet-class>
+        <init-param>
+            <param-name>emailTemplatePath</param-name>
+            <param-value>/WEB-INF/email_template.html</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>SendMailServlet</servlet-name>
