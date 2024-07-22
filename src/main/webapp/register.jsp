@@ -24,6 +24,7 @@
     <br/>
     <br/>
     <input type="submit" value="Register">
+    <button type="submit" formaction="index.jsp">Back To Login</button>
 </form>
 
 <%
@@ -39,7 +40,7 @@
 
 
 <% if(Objects.equals(errorMessage, "User created successfully")){ %>
-    <button type="submit" formaction="index.jsp">Back To Login</button>
+
 <% } %>
 </body>
 </html>

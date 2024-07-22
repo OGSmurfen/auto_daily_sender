@@ -5,9 +5,9 @@
   <title>webapp</title>
 </head>
 <body>
-<h1><%= "Webapp!" %></h1>
+<h1><%= "Automatic daily sender app!" %></h1>
 <br/>
-<a href="hello-servlet">GetAll Users (in development only)</a>
+<%--<a href="hello-servlet">GetAll Users (in development only)</a>--%>
 <br/>
 <br/>
 <br/>

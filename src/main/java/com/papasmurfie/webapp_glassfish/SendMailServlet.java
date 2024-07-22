@@ -38,11 +38,18 @@ public class SendMailServlet extends HttpServlet {
 
 
     private void sendMail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String mailBody = req.getParameter("mailcontent");
-        String recipient = req.getParameter("recipient");
+        String mailContentToday = req.getParameter("mailcontenttoday");
+        String mailContentTomorrow = req.getParameter("mailcontenttomorrow");
+        String mailContentIssues = req.getParameter("mailcontentissues");
+        //String recipient = req.getParameter("recipient");
+        String recipient = "chakarov.ilia@gmail.com";
 
         String template = new String(Files.readAllBytes(Paths.get(getServletContext().getRealPath(emailTemplatePath))));
-        String filledTemplate = template.replace("[Recipient]", "OGSmurfen").replace("[Email Content]", mailBody);
+        String filledTemplate = template
+                .replace("[Recipient]", "OGSmurfen")
+                .replace("[Today's Content]", mailContentToday)
+                .replace("[Tomorrow's Content]", mailContentTomorrow)
+                .replace("[Issues Content]", mailContentIssues);
 
         try {
             //emailSender.sendEmail(recipient, "Daily-Auto-Mail", mailBody);

@@ -26,6 +26,7 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
+        String email = request.getParameter("email");
 
         if(!password.equals(confirmPassword)){
             request.setAttribute("errorMessage", "Passwords must match");
@@ -37,14 +38,14 @@ public class RegisterServlet extends HttpServlet {
                 request.getRequestDispatcher(getServletContext().getInitParameter("registerPage")).forward(request, response);
             }else{
                 //if username is free -> create new user
-                createUserWithEncryptedPassword(request, response, username, password);
+                createUserWithEncryptedPassword(request, response, username, password, email);
             }
         }
 //        RequestDispatcher dispatcher = request.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage"));
 //        dispatcher.forward(request, response);
     }
 
-    private void createUserWithEncryptedPassword(HttpServletRequest request, HttpServletResponse response, String username, String password) throws ServletException, IOException {
+    private void createUserWithEncryptedPassword(HttpServletRequest request, HttpServletResponse response, String username, String password, String email) throws ServletException, IOException {
         try {
             byte[] salt = PasswordEncryptUtil.generateSalt();
             String hashedPassword = PasswordEncryptUtil.hashPassword(password, salt);
@@ -53,6 +54,7 @@ public class RegisterServlet extends HttpServlet {
             newUser.setUsername(username);
             newUser.setPassword(hashedPassword);
             newUser.setSalt(salt);
+            newUser.setEmail(email);
 
             userService.createUser(newUser);
 
