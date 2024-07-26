@@ -1,0 +1,33 @@
+h1 {
+    color: black;
+}
+
+body {
+    background-color: #70d6ff;
+}
+
+input {
+    background-color: #e9ff70;
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+
+}
+
+input:hover{
+    background-color: #ffd670;
+    border-color: #888;
+}
+
+button{
+    background-color: #e9ff70;
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+button:hover{
+     background-color: #ffd670;
+     border-color: #888;
+ }
