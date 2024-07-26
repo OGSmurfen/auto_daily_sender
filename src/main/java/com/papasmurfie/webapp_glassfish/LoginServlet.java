@@ -28,17 +28,25 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
 
+
+
+
         try {
             if(validateLogin(username, password)){
-                req.setAttribute("username", username);
+//                req.setAttribute("username", username);
+
+                HttpSession session = req.getSession();
+                session.setAttribute("username", username);
 
                 errorMessage = "";
-                RequestDispatcher dispatcher = req.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage"));
-                dispatcher.forward(req, resp);
+                resp.sendRedirect("my_account.jsp");
+//                RequestDispatcher dispatcher = req.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage"));
+//                dispatcher.forward(req, resp);
             }else{
                 errorMessage = "Invalid username or password!";
                 req.setAttribute("errorMessage", errorMessage);
@@ -51,6 +59,8 @@ public class LoginServlet extends HttpServlet {
         }
 
     }
+
+
 
     private boolean validateLogin(String un, String pw) throws NoSuchAlgorithmException {
         User retrievedUser = userService.getUserByUsername(un);

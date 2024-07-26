@@ -1,16 +1,21 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: papa_smurf
-  Date: 7/15/2024
-  Time: 11:26 AM
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <html>
 <head>
-    <title>Account information:</title>
+    <title>${username}'s Daily</title>
 </head>
 <body>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); //HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setHeader("Expires", "0"); // Proxies
+
+    if (session.getAttribute("username") == null ) {
+        response.sendRedirect("index.jsp");
+    }
+%>
 
 <br/>
 <h2>Welcome back, <b>${username}</b></h2>
@@ -34,20 +39,31 @@
 <%--    <label for="recipient">Recipient: </label><input type="text" name="recipient" id="recipient">--%>
     <br/>
     <input type="submit" value="Send">
-    <button type="submit" formaction="index.jsp">Logout</button>
+
+</form>
+<form action="${pageContext.request.contextPath}/LogoutServlet" method="get">
+    <input type="submit" value="Logout">
 </form>
 
 
-<%
-    String errorMessage = (String) request.getAttribute("errorMessage");
-    if (errorMessage != null) {
-%>
 <div style="color: red;">
-    <%= errorMessage %>
+    <%if(session.getAttribute("email") != null)
+        out.print(session.getAttribute("email"));  %>
 </div>
-<%
-    }
-%>
+
+
+
+
+<%--<%--%>
+<%--    String errorMessage = (String) request.getAttribute("errorMessage");--%>
+<%--    if (errorMessage != null) {--%>
+<%--%>--%>
+<%--<div style="color: red;">--%>
+<%--    <%= errorMessage %>--%>
+<%--</div>--%>
+<%--<%--%>
+<%--    }--%>
+<%--%>--%>
 
 </body>
 </html>

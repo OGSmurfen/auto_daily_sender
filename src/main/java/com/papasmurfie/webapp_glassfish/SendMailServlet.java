@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import utils.EmailSender;
 
 import java.io.BufferedWriter;
@@ -29,12 +30,14 @@ public class SendMailServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        HttpSession session = req.getSession(false);
+//        if(session == null || session.getAttribute("username") == null){
+//            resp.sendRedirect("login.jsp");
+//            return;
+//        }
+
         sendMail(req, resp);
     }
-
-
-
-
 
 
     private void sendMail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,7 +58,10 @@ public class SendMailServlet extends HttpServlet {
             //emailSender.sendEmail(recipient, "Daily-Auto-Mail", mailBody);
             emailSender.sendEmail(recipient, "Daily-Auto-Mail", filledTemplate);
             req.setAttribute("errorMessage", "Mail sent successfully!");
-            req.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage")).forward(req, resp);
+            HttpSession session = req.getSession(false);
+            session.setAttribute("email", "Email sent successfully");
+            resp.sendRedirect("my_account.jsp");
+           // req.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage")).forward(req, resp);
         } catch (MessagingException e) {
             req.setAttribute("errorMessage", e.toString());
             req.getRequestDispatcher(getServletContext().getInitParameter("myAccountPage")).forward(req, resp);
